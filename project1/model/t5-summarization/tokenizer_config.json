@@ -1,0 +1,14 @@
+{
+  "backend": "tokenizers",
+  "eos_token": "</s>",
+  "extra_ids": 100,
+  "extra_special_tokens": [
+    "[REDACTED]"
+  ],
+  "is_local": false,
+  "local_files_only": false,
+  "model_max_length": 1000000000000000019884624838656,
+  "pad_token": "<pad>",
+  "tokenizer_class": "T5Tokenizer",
+  "unk_token": "<unk>"
+}
