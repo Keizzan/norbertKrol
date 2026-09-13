@@ -3,13 +3,18 @@ import pandas as pd
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
+from transformers import set_seed
+
+
+# Set seed for reproducibility
+SEED = 55
+set_seed(SEED)
 
 # Create empty DF
-df = pd.DataFrame(columns=['id','findings','impressions'])
+df = pd.DataFrame(columns=['id','findings','impression'])
 
 # Register path to data folder
-document_path = Path('project1/data/NLMCXR_reports/ecgen-radiology')
-
+document_path = Path('../data/NLMCXR_reports/ecgen-radiology')
 
 # Loop through all files in the folder
 for doc in document_path.iterdir():
@@ -21,14 +26,14 @@ for doc in document_path.iterdir():
         medical_data = ET.parse(doc)
         medical_data_root = medical_data.getroot()
 
-        # Extract id, findings & impressions
+        # Extract id, findings & impression
         id_medical = medical_data_root.find('IUXRId').attrib.get('id')
         abstract_data = medical_data_root.find('.//Abstract')
         findings_data = abstract_data.find('.//AbstractText[@Label="FINDINGS"]').text
-        impressions_data = abstract_data.find('.//AbstractText[@Label="IMPRESSION"]').text
+        impression_data = abstract_data.find('.//AbstractText[@Label="IMPRESSION"]').text
 
         # Append data to df
-        df = pd.concat([df, pd.DataFrame({'id': [id_medical], 'findings': [findings_data], 'impressions': [impressions_data]})], ignore_index=True)
+        df = pd.concat([df, pd.DataFrame({'id': [id_medical], 'findings': [findings_data], 'impression': [impression_data]})], ignore_index=True)
 
 # Convert id column from string to int
 df['id'] = df['id'].astype(int)
@@ -51,12 +56,12 @@ regex_pattern_4 = r'\s+'
 
 # Apply regex patterns
 df['findings'] = df['findings'].str.replace(regex_pattern, '[REDACTED]', regex=True).str.replace(regex_pattern_2, '', regex=True).str.replace(regex_pattern_3, '.', regex=True).str.replace(regex_pattern_4, ' ', regex=True)
-df['impressions'] = df['impressions'].str.replace(regex_pattern, '[REDACTED]', regex=True).str.replace(regex_pattern_2, '', regex=True).str.replace(regex_pattern_3, '.', regex=True).str.replace(regex_pattern_4, ' ', regex=True)
+df['impression'] = df['impression'].str.replace(regex_pattern, '[REDACTED]', regex=True).str.replace(regex_pattern_2, '', regex=True).str.replace(regex_pattern_3, '.', regex=True).str.replace(regex_pattern_4, ' ', regex=True)
 
-# Drop duplicates where findings and impressions are the same, keeping only one row
-df = df.drop_duplicates(subset=['findings', 'impressions'], keep='first')
+# Drop duplicates where findings and impression are the same, keeping only one row
+df = df.drop_duplicates(subset=['findings', 'impression'], keep='first')
 
 # Export the cleaned dataframe to a CSV file
-df.to_csv('project1/data/cleaned_data.csv', index=False)
-print("Data cleaning complete. Data exported to 'cleaned_data.csv'.")
+df.to_csv('../data/cleaned_data.csv', index=False)
+print("Data cleaning complete. Data exported to '../data/cleaned_data.csv'.")
 
