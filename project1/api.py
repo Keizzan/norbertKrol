@@ -74,7 +74,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def index():
-    input = request.get_data(as_text=True)
+    input = request.get_json()['input']
     output, status = summarize(input)
     return jsonify({'input': input, 'output': output}), status
 if __name__ == "__main__":
