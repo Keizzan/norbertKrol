@@ -45,6 +45,8 @@ def vocab_presence(input, vocab=top_words):
 def validate_input(input):
     if not isinstance(input, str):
         return False, 'Incorrect input. Input must be a string.'
+    if len(input.strip()) < 10:
+        return False, 'Input is too short.'
     if len(input.strip()) > 2000:
         return False, 'Input is too long. Max is 2000 characters.'
     if vocab_presence(input):
