@@ -22,7 +22,7 @@ set_seed(SEED)
 df = pd.DataFrame(columns=['id','findings','impression'])
 
 # Register path to data folder
-document_path = Path('../data/NLMCXR_reports/ecgen-radiology')
+document_path = Path('data/NLMCXR_reports/ecgen-radiology')
 
 # Loop through all files in the folder
 for doc in document_path.iterdir():
@@ -70,8 +70,8 @@ df['impression'] = df['impression'].str.replace(regex_pattern, '[REDACTED]', reg
 df = df.drop_duplicates(subset=['findings', 'impression'], keep='first')
 
 # Export the cleaned dataframe to a CSV file
-df.to_csv('../data/cleaned_data.csv', index=False)
-print("Data cleaning complete. Data exported to '../data/cleaned_data.csv'.")
+df.to_csv('data/cleaned_data.csv', index=False)
+print("Data cleaning complete. Data exported to 'data/cleaned_data.csv'.")
 
 
 # Regex patterns to classify normal and abnormal cases
@@ -86,6 +86,11 @@ df['key'] = np.where(case_filter, 'normal', 'abnormal')
 # Train Test Validation Split 80/10/10
 train_df, val_test_df = train_test_split(df, test_size=0.2, stratify=df['key'], random_state=SEED)
 val_df, test_df = train_test_split(val_test_df, test_size=0.5, stratify=val_test_df['key'], random_state=SEED)
+
+# Export train/val/test datasets to csv
+train_df.to_csv('data/train_data.csv', index=False)
+val_df.to_csv('data/val_data.csv', index=False)
+test_df.to_csv('data/test_data.csv', index=False)
 
 # Load base model & tokenizer
 print('Downloading model&tokenizer...')
@@ -129,7 +134,7 @@ lora_config = LoraConfig(
 model = get_peft_model(model, lora_config)
 
 # Model path
-model_path = '../models/t5'
+model_path = 'models/t5'
 
 # Training arguments
 training_args = Seq2SeqTrainingArguments(
@@ -166,7 +171,7 @@ trainer.train()
 print('Training completed.')
 
 # Model save path
-finetune_model_path = '../model/t5-summarization'
+finetune_model_path = 'model/t5-summarization'
 
 # Save fine tuned model
 updated_model = model.merge_and_unload()
@@ -198,7 +203,7 @@ word_freq = sorted(zip(words,word_counts), key=lambda x: x[1], reverse=True)
 top_words = list(word for word, _ in word_freq[:100])
 
 # TF-IDF model save path
-tfidf_path = '../model/tfidf/'
+tfidf_path = 'model/tfidf/'
 
 # Save trained model 
 joblib.dump(vectorizer, tfidf_path + 'tfidf_vectorizer.joblib')

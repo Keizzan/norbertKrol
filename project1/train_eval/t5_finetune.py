@@ -3,7 +3,6 @@ from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, DataCollatorForSeq2Seq, Seq2SeqTrainingArguments, Seq2SeqTrainer, GenerationConfig, set_seed
 import torch
 from peft import LoraConfig, get_peft_model, TaskType
-from rouge_score import rouge_scorer
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -30,6 +29,11 @@ df['key'] = np.where(case_filter, 'normal', 'abnormal')
 # Train Test Validation Split 80/10/10
 train_df, val_test_df = train_test_split(df, test_size=0.2, stratify=df['key'], random_state=SEED)
 val_df, test_df = train_test_split(val_test_df, test_size=0.5, stratify=val_test_df['key'], random_state=SEED)
+
+# Export train/val/test datasets to csv
+train_df.to_csv('../data/train_data.csv', index=False)
+val_df.to_csv('../data/val_data.csv', index=False)
+test_df.to_csv('../data/test_data.csv', index=False)
 
 # Load base model & tokenizer
 model_name = 'google-t5/t5-base'
