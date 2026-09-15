@@ -1,0 +1,65 @@
+<!-- Index page template -->
+
+{% extends "base.html" %}
+
+<!-- Define metric block -->
+{% block metrics %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-2">
+  {% for dataset, scores in scores.items() %}
+  <div class="col">
+    <div class="card h-100">
+      <div class="card-header text-capitalize text-center">{{ dataset.replace('_', ' ') }}</div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col metric-box">
+            <div class="fs-4">{{ scores.r1f1|round(2) }}</div>
+            <div class="text-muted small">ROUGE-1 F1</div>
+          </div>
+          <div class="col metric-box">
+            <div class="fs-4">{{ scores.r2f1|round(2) }}</div>
+            <div class="text-muted small">ROUGE-2 F1</div>
+          </div>
+          <div class="col metric-box">
+            <div class="fs-4">{{ scores.rlf1|round(2) }}</div>
+            <div class="text-muted small">ROUGE-L F1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+{% endblock %}
+
+{% block form %}
+<div class="container">
+  <form method="post">
+    <div class="mb-3">
+      <label for="input-text" class="form-label">Findings</label>
+      <textarea name="input_text" id="input-text" class="form-control" rows="6" maxlength="2000"
+        placeholder="Enter your findings (10-2000 characters)...">{{ result.input if result else '' }}</textarea>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary text-center">Summarize</button>
+    </div>
+  </form>
+
+  {% if error %}
+  <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block results %}
+{% if result %}
+<div class="container mt-4">
+  <h5>Formatted output</h5>
+  <p class="border rounded p-3 bg-light">{{ result.output }}</p>
+
+  <h5 class="mt-4">Raw response</h5>
+  <pre class="border rounded p-3 bg-light">{{ result | tojson(indent=2) }}</pre>
+</div>
+{% endif %}
+{% endblock %}

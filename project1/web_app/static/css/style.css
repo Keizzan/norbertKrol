@@ -1,0 +1,23 @@
+body {
+  background-color: #aac9c5;
+}
+
+header h1 {
+  font-weight: 600;
+}
+
+.card {
+  box-shadow: 0 1px 3px rgba(230, 15, 15, 0.08);
+  border: none;
+}
+
+.metric-box {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding: 0.75rem 0.5rem;
+  background-color: #8069d4;
+}
+
+.card{
+    background-color: #728191;
+}

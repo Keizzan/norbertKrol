@@ -1,13 +1,14 @@
 # Import libraries
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, GenerationConfig
 import torch
 import joblib
+import json
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Set device
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
+# device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cpu"
 # Model path
 model_path = "model/t5-summarization"
 
@@ -68,12 +69,28 @@ def summarize(text):
             output = model.generate(**inputs, generation_config=gen_conf)
         return tokenizer.decode(output[0], skip_special_tokens=True), 200
 
+# Load score results from json
+with open('data/results.json') as f:
+    scores = json.load(f)
 
 # Flask App
 app = Flask(__name__)
 
-@app.route('/', methods=['POST'])
-def index():
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    error = None
+    result = None
+    if request.method == 'POST':
+        input = request.form.get('input_text')
+        output, status = summarize(input)
+        if status == 200:
+            result = {'input': input, 'output': output}
+        else:
+            error = output
+    return render_template('index.html', scores=scores, result=result, error=error)
+
+@app.route('/api_endpoint', methods=['POST'])
+def api_endpoint():
     input = request.get_json()['input']
     output, status = summarize(input)
     return jsonify({'input': input, 'output': output}), status
