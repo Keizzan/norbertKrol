@@ -1,0 +1,78 @@
+[
+    {
+        "name": "Python",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/250px-Python-logo-notext.svg.png"
+    },
+    {
+        "name": "JavaScript",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/250px-JavaScript-logo.png"
+    },
+    {
+        "name": "SQL",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_data_base_with_logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+    },
+    {
+        "name": "R",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/330px-R_logo.svg.png"
+    },
+    {
+        "name": "VueJS",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+    },
+    {
+        "name": "HTML",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/250px-HTML5_logo_and_wordmark.svg.png"
+    },
+    {
+        "name": "CSS",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/250px-CSS3_logo_and_wordmark.svg.png"
+    },
+    {
+        "name": "PyTorch",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/PyTorch_logo_icon.svg/250px-PyTorch_logo_icon.svg.png"
+    },
+    {
+        "name": "TensorFlow",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Tensorflow_logo.svg/250px-Tensorflow_logo.svg.png"
+    },
+    {
+        "name": "Pandas",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/2/22/Pandas_mark.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+    },
+    {
+        "name": "NumPy",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/NumPy_logo_2020.svg/330px-NumPy_logo_2020.svg.png"
+    },
+    {
+        "name": "Hugging Face",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Hf-logo-without-title.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+    },
+    {
+        "name": "Scikit Learn",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+    },
+    {
+        "name": "Flask",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flask_logo.svg/330px-Flask_logo.svg.png"
+    },
+    {
+        "name": "MatPlotLib",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Matplotlib_icon.svg/250px-Matplotlib_icon.svg.png"
+    },
+    {
+        "name": "Seaborn",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/4/45/Logo-seaborn.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+    },
+    {
+        "name": "Colab",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Google_Colaboratory_SVG_Logo.svg/330px-Google_Colaboratory_SVG_Logo.svg.png"
+    },
+    {
+        "name": "Jupyter Notebook",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png"
+    },
+    {
+        "name": "VS Code",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/250px-Visual_Studio_Code_1.35_icon.svg.png"
+    }
+]

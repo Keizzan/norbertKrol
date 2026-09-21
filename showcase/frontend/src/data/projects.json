@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Radiology Report Summarizer",
+    "description": "Fine-tuned a T5-base model to generate the Impression section of chest X-ray reports from their Findings, trained on the Open-i dataset and served through a Flask REST API with input validation to reject non-medical text. Built with Python, Hugging Face Transformers, PyTorch, Flask, and deployed on Render.",
+    "link": "https://norbertkrol.onrender.com/"
+  },
+  {
+    "name": "Project Two",
+    "description": "Short description of what this project does and the tech stack used.",
+    "link": "https://example.com/project-two"
+  }
+]
