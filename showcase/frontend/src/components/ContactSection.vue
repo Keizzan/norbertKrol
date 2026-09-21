@@ -19,7 +19,11 @@ async function contactSubmit() {
   try {
     console.log({ ...form })
     // Sent request to backend
-    const response = await fetch('/api/contact', {
+    // 
+    /////////////////// URGENT ///////////////////
+    // Replace with your backend URL if different
+    /////////////////////////////////////////////
+    const response = await fetch('http://127.0.0.1:8000/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
