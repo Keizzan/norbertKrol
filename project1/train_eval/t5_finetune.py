@@ -17,6 +17,7 @@ set_seed(SEED)
 # Load data to DF
 df = pd.read_csv(data)
 
+print('Spliting data into train, validation, and test sets.')
 # Regex patterns to classify normal and abnormal cases
 normal_case_regex = r'no acute|no evidence of|negative|clear lungs|normal|unremarkable'
 abnormal_case_regex = r'atelectasis|effusion|cardiomegaly|congestion|pneumothorax'
@@ -30,11 +31,19 @@ df['key'] = np.where(case_filter, 'normal', 'abnormal')
 train_df, val_test_df = train_test_split(df, test_size=0.2, stratify=df['key'], random_state=SEED)
 val_df, test_df = train_test_split(val_test_df, test_size=0.5, stratify=val_test_df['key'], random_state=SEED)
 
+print(f"Train set shape: {train_df.shape}")
+print(f"Validation set shape: {val_df.shape}")
+print(f"Test set shape: {test_df.shape}")
+
+print('Exporting train/val/test datasets to CSV.')
 # Export train/val/test datasets to csv
 train_df.to_csv('../data/train_data.csv', index=False)
 val_df.to_csv('../data/val_data.csv', index=False)
 test_df.to_csv('../data/test_data.csv', index=False)
+print('Export complete.')
 
+
+print('Loading base model and tokenizer.')
 # Load base model & tokenizer
 model_name = 'google-t5/t5-base'
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -43,6 +52,9 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 # Add special token for [REDACTED]
 tokenizer.add_special_tokens({'additional_special_tokens': ['[REDACTED]']})
 model.resize_token_embeddings(len(tokenizer))
+
+print('Base model and tokenizer loaded.')
+
 
 # Tokenize data function
 def tokenize_data(data):
@@ -56,10 +68,12 @@ train_dataset = Dataset.from_pandas(train_df.drop(columns=['key']), preserve_ind
 test_dataset = Dataset.from_pandas(test_df.drop(columns=['key']), preserve_index=False)
 val_dataset = Dataset.from_pandas(val_df.drop(columns=['key']), preserve_index=False)
 
+print('Tokenizing datasets.')
 # Tokenize dataset
 train_dataset_tokenized = train_dataset.map(tokenize_data, batched=True, remove_columns=train_dataset.column_names)
 test_dataset_tokenized = test_dataset.map(tokenize_data, batched=True, remove_columns=test_dataset.column_names)
 val_dataset_tokenized = val_dataset.map(tokenize_data, batched=True, remove_columns=val_dataset.column_names)
+print('Datasets tokenized.')
 
 # Define lora config
 lora_config = LoraConfig(
@@ -115,13 +129,17 @@ trainer = Seq2SeqTrainer(
     data_collator=data_collator
 )
 
+print('Starting model training.')
 # Start training    
 trainer.train()
+print('Model training complete.')
 
 # Local save path
 finetune_model_path = '../model/t5-summarization'
+print(f'Saving fine-tuned model to {finetune_model_path}.')
 
 # Save fine tuned model
 updated_model = model.merge_and_unload()
 updated_model.save_pretrained(finetune_model_path)
 tokenizer.save_pretrained(finetune_model_path)
+print('Fine-tuned model saved.')

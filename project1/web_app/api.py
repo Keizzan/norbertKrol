@@ -81,18 +81,19 @@ def home():
     error = None
     result = None
     if request.method == 'POST':
-        input = request.form.get('input_text')
-        output, status = summarize(input)
+        output, status = summarize(request.form.get('input_text'))
         if status == 200:
-            result = {'input': input, 'output': output}
+            result = output
         else:
             error = output
     return render_template('index.html', scores=scores, result=result, error=error)
 
 @app.route('/api_endpoint', methods=['POST'])
 def api_endpoint():
-    input = request.get_json()['input']
-    output, status = summarize(input)
-    return jsonify({'input': input, 'output': output}), status
+    input = request.get_json(silent=True) or {}
+    output, status = summarize(input.get('findings'))
+    if status != 200:
+        return jsonify({'error': output}), status
+    return jsonify({'impression': output}), status
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

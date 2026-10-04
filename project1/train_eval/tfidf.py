@@ -20,10 +20,12 @@ vectorizer = TfidfVectorizer(max_df=.8, ngram_range=(1,2), stop_words=custom_sto
 # Fit/transform findings
 tfidf_matrix = vectorizer.fit_transform(findings)
 
+print('TF-IDF matrix created.')
 # Retrieve 100 top words
 count_vectorizer = CountVectorizer(max_df=.9, min_df=2, stop_words=custom_stopwords)
 count_matrix = count_vectorizer.fit_transform(findings)
 
+print('Retrieving top 100 words.')
 word_counts = count_matrix.sum(axis=0).A1
 words = count_vectorizer.get_feature_names_out()
 word_freq = sorted(zip(words,word_counts), key=lambda x: x[1], reverse=True)
@@ -36,3 +38,4 @@ path = '../model/tfidf/'
 joblib.dump(vectorizer, path + 'tfidf_vectorizer.joblib')
 joblib.dump(tfidf_matrix, path + 'tfidf_matrix.joblib')
 joblib.dump(top_words, path + 'top_words.joblib')
+print('TF-IDF model and top words saved.')

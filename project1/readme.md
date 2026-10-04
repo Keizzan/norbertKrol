@@ -1,25 +1,53 @@
-#### Model Summary
-This project implements summarization system using fine tuned T5-base model. 'FINDINGS'(input) and 'IMPRESSION'(output) was extracted from XML files that contains medical reports. EDA performed on data includes removing empty fields and duplicated records, removing duplicated punctuation, list formatting and standardize PPI. Processed data was extraced to 'cleaned_data.csv'. Model was trained with LoRa to reduce trainable parameters, which helps trainig process be quicker and reduce memory usage. LoRa affect query, key, value and output modules. Dataset was split into training, validation and test sets in 8:1:1 ratio. Split was stratified based on normal and abnormal case labels. Model was trained on Google Colab GPU L4. Training rate was 5e-5 with 15 epochs and batch size of 16. Rouge1 F1 score on test set was 0.38 and validation set 0.32. Final system contains fined tuned model and TF-IDF vectorizer working as gatekeeper to filter users input, and rejecting irrelevant requests. 
+# Project 1 – Radiology Report Summarisation (FINDINGS → IMPRESSION)
 
-#### Limitations and recommendations
-Implementation is limited by dataset and training approach. LoRa reduce computations cost, so model can be trained locally, but full fine tune would produce bigger impact on model perfomance. Also in feature creation, key (normal/abnormal labels) were created, by using most common phrases appearing in dataset + most common words appearing in chest xrays datasets, manual labeling would improve quality. In addition TF-IDF validation step is heuristic filter and may reject some valid, but rare inputs. To improve system perfomance, model could be trained longer or  on bigger dataset or use larger base model.
+Fine-tuned T5-base (LoRA) generates the IMPRESSION of a chest X-ray report from its FINDINGS. A TF-IDF gatekeeper rejects non-radiology input. Served via a Flask REST API.
 
-#### REST API documentation
-This api accepts radiology reports in json format with 'input' as a key and returns generated summary also in json with repeated 'input' and 'output'.
+## Setup
+1. **Raw data:** extract the NLM Open-i `NLMCXR_reports` files are at `project1/data/NLMCXR_reports/ecgen-radiology/*.xml`.
+2. **Install** (Python 3.12, from `project1/`; GPU recommended, first run downloads `google-t5/t5-base`):
+   ```bash
+   python3 -m venv venv && source venv/bin/activate
+   pip install -r requirements.txt
+   ```
 
-URL: https://norbertkrol.onrender.com/
-Method: POST
-Authentication required: No
+## Run the pipeline
+From `project1/`: `python run_pipeline.py`. Stages run in this order:
 
-Data example
-{'input':'The trachea is midline. The cardiomediastinal silhouette is normal. The lungs are clear, without evidence of acute infiltrate or effusion. There is no pneumothorax. The visualized bony structures reveal no acute abnormalities.'}
+| # | Script | Output |
+|---|---|---|
+| 1 | `eda/eda.py` | `data/cleaned_data.csv` |
+| 2 | `train_eval/t5_finetune.py` | `data/{train,val,test}_data.csv`, final model in `model/t5-summarization/` |
+| 3 | `train_eval/tfidf.py` | `model/tfidf/*.joblib` |
 
-Success Response
-Code: 200
-Content example:
-{'input': 'The trachea is midline. The cardiomediastinal silhouette is normal. The lungs are clear, without evidence of acute infiltrate or effusion. There is no pneumothorax. The visualized bony structures reveal no acute abnormalities.', 'output':'No acute cardiopulmonary abnormalities.'}
+Notebooks are development evidence only and are not used by the pipeline.
 
-Error response
-Condition: Input too short or too long, doesn't contain medical vocabulary or doesn't resemble medical report
-Code: 400
-Content:{'input': 'This recepie requires flour, sugar and eggs. It is very quick and easy.', 'output': 'Your input is not suitable for this function'}
+## Dataset cleaning statistics (printed by the data-processing stage)
+Files processed 3955 · Records extracted 3955 · Missing FINDINGS 530 · Missing IMPRESSION 34 · Records removed (missing) 536 · Duplicates removed 724 · **Final cleaned size 2695** · Train/Val/Test **2156 / 269 / 270** (80/10/10, stratified).
+
+## Model and results
+T5-base + LoRA (r=64, alpha=128, targets q/k/v/o), lr 5e-5, 15 epochs, batch 16, seed 55. Gatekeeper: 10–2000 chars, top-100 TF-IDF word present, cosine similarity > 0.2.
+
+| Split | ROUGE-1 F1 | ROUGE-2 F1 | ROUGE-L F1 |
+|---|---|---|---|
+| Validation | 0.336 | 0.219 | 0.329 |
+| **Test** | **0.382** | 0.243 | 0.377 |
+
+Sample predictions:
+- "The lungs are clear. Heart size and mediastinal contours are normal. No osseous abnormalities." → *No acute cardiopulmonary findings.*
+- "AP and lateral views were obtained. Bibasilar atelectasis and small left-sided pleural effusion. Stable cardiomegaly. No pneumothorax. Mild pulmonary vascular congestion" → *Bibasilar atelectasis and small left-sided pleural effusion. Stable cardiomegaly.*
+
+## REST API
+**Live:** `POST https://norbertkrol.onrender.com/api_endpoint` (`Content-Type: application/json`)
+
+- Request: `{"findings": "The lungs are clear. Heart size and mediastinal contours are normal. No osseous abnormalities."}`
+- Success (200): `{"impression": "No acute cardiopulmonary findings."}`
+- Error (400, missing/non-string/too short or long/non-radiology `findings`): `{"error": "Incorrect input. Input must be a string."}`
+
+**Run locally** (after the pipeline, from `project1/`):
+```bash
+python web_app/api.py 
+```
+A browser form with ROUGE scores is at `http://127.0.0.1:5000/`.
+
+## Limitations
+LoRA instead of full fine-tuning; normal/abnormal labels are keyword-based; the TF-IDF filter is heuristic and may reject rare valid reports. Improvements: longer training, more data, larger base model.
