@@ -1,5 +1,5 @@
 # CORS 
-site = "https://norbertkrolshowcase.onrender.com/"
+site = "https://norbertkrolshowcase.onrender.com"
 
 # RESEND 
 resend_api_key = "re_NB5G1aiP_MZR9pUf1wnTRFX7k3UUbn8fq"
