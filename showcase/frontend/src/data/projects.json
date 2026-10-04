@@ -5,8 +5,8 @@
     "link": "https://norbertkrol.onrender.com/"
   },
   {
-    "name": "Project Two",
-    "description": "Short description of what this project does and the tech stack used.",
-    "link": "https://example.com/project-two"
+    "name": "Visual Product Recommendations",
+    "description": "Developed a visual product recommendation system that suggests similar products based on user-uploaded images, leveraging deep learning for image feature extraction and similarity matching. Built with Python, PyTorch, and deployed on Render.",
+    "link": "https://norbertkrol1.onrender.com/"
   }
 ]

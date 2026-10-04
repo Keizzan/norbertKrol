@@ -2,6 +2,6 @@
 site = "<your_frontend_site_here>"
 
 # RESEND 
-resend_api_key = '<your_resend_api_key_here>'
-from_email = '<your_from_email_here>'
-to_email = '<your_to_email_here>'
+resend_api_key = "re_NB5G1aiP_MZR9pUf1wnTRFX7k3UUbn8fq"
+from_email = "onboarding@resend.dev"
+to_email = "norbikrol@protonmail.com"
