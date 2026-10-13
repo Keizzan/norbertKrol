@@ -92,17 +92,9 @@ All commands run from the repository root, because the scripts use relative `dat
 2. Configure Kaggle credentials for `kagglehub`.
 3. Build the data. This downloads the dataset, cleans it, extracts embeddings, and writes `data/catalog.csv` and `data/embeddings/`:
    ```bash
-   python data_pipeline.py
-   ```
-      or 
-   ```bash
-   python3 rest_images.py
+   python3 data_pipeline.py
    ```
 4. *(Optional, only for hosting images on Hugging Face)* Split the images into 5,000-image subfolders:
-   ```bash
-   python rest_images.py
-   ```
-   or 
    ```bash
    python3 rest_images.py
    ```
