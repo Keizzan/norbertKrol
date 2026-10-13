@@ -2,7 +2,7 @@
 import kagglehub
 
 print("Starting download of dataset...")
-# Download latest version
+# Download latest version of the Vibrent Clothes Rental dataset
 data_path = kagglehub.dataset_download("kaborg15/vibrent-clothes-rental-dataset")
 
 print("Download completed. Dataset saved to:", data_path)
@@ -17,14 +17,35 @@ import shutil
 from torchvision import models
 import torch
 
+# Save locally datasets
+os.makedirs('data', exist_ok=True)
+data1 = pd.read_csv(f'{data_path}/outfits.csv', sep=';')
+data1.to_csv('data/outfits.csv')
+print("Saving outfits.csv locally...")
+data2 = pd.read_csv(f'{data_path}/picture_triplets.csv', sep=';')
+data2.to_csv('data/picture_triplets.csv')
+print("Saving picture_triplets.csv locally...")
+
+# Download images to local environment
+image_path = f'{data_path}/images'
+download_path = 'data/images'
+os.makedirs(download_path, exist_ok=True)
+
+print("Starting image download...")
+for image in data2['file_name']:
+    original_img = f'{image_path}/{image}'
+    shutil.copy(original_img, f'{download_path}/{image}')
+print("All images copied successfully.")
+
 
 # Load outfits and picture triplets csv and drop irrelevant columns
-data_outfits = pd.read_csv(f'{data_path}/outfits.csv', sep=';')
+data_outfits = pd.read_csv('data/outfits.csv')
 data_outfits = data_outfits[['id','group']]
 print('Outfits data loaded successfully.')
 print(data_outfits.info())
 # Load picture triplets csv
-data_picture = pd.read_csv(f'{data_path }/picture_triplets.csv', sep=';').drop(columns=['displayOrder'])
+data_picture = pd.read_csv('data/picture_triplets.csv')
+data_picture.drop(columns=['displayOrder'], inplace=True)
 print('Picture triplets data loaded successfully.')
 print(data_picture.info())
 
@@ -56,15 +77,14 @@ print(f'Length of data_outfits: {len(data_outfits)}')
 print(f'Length of data_picture: {len(data_picture)}')
 
 # Create image path and check if image exists
-data_picture['image_path'] = data_picture['file_name'].apply(lambda x: f"data/archive/images/{x}")
-# data_picture['image_path'] = data_picture['file_name'].apply(lambda x: f"{data_path}/images/{x}")
+data_picture['image_path'] = data_picture['file_name'].apply(lambda x: f'data/images/{x}')
 data_picture['image_exists'] = data_picture['image_path'].apply(lambda x: os.path.exists(x))
 
 print('Number of images that exist:', data_picture['image_exists'].sum())
 print('Number of images that do not exist:', len(data_picture) - data_picture['image_exists'].sum())
 
 # Merge both dataframes 
-merged_data = data_picture.merge(data_outfits[['id', 'group']], left_on='outfit.id', right_on='id', how='left').drop(columns=['id', 'image_exists'])
+merged_data = data_picture.merge(data_outfits, left_on='outfit.id', right_on='id', how='left').drop(columns=['id', 'image_exists'])
 
 print(f"Merged data shape: {merged_data.shape} \n" )
 print(f"Merged data missing values: \n{merged_data.isna().sum()}")
@@ -116,6 +136,7 @@ print('Load MobileNet model')
 model_name = 'mobilenet_v3_large'
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
+
 # Set model and weights
 weights = models.MobileNet_V3_Large_Weights.DEFAULT
 model = models.mobilenet_v3_large(weights=weights)
@@ -153,6 +174,7 @@ for _, row in merged_data.iterrows():
 print(f'Total embeddings: {len(all_embeddings)}, Total IDs: {len(all_ids)}')
 print(f'Total invalid images: {len(invalid)}')
 
+os.makedirs(f'{save_path}/embeddings', exist_ok=True)
 np.save(f'{save_path}/embeddings/embeddings.npy', np.array(all_embeddings))
 np.save(f'{save_path}/embeddings/picture_ids.npy', np.array(all_ids))
 
@@ -171,15 +193,11 @@ catalog.to_csv(f'{save_path}/catalog.csv', index=False)
 print(f'Catalog saved to: {save_path}/catalog.csv')
 
 
-### COMMENT OUT IF YOU DON'T NEED TO DOWNLOAD IMAGES LOCALLY ###
-# Download images to local environment
-image_path = f'{data_path}/images'
-download_path = 'data/copied_images'
+# Save final images 
+os.makedirs('data/final_images', exist_ok=True)
 
-os.makedirs(download_path, parents=True, exist_ok=True)
-
-print("Starting image download...")
+print("Starting image copy...")
 for image in catalog['file_name']:
-    original_img = f'{image_path}/{image}'
-    shutil.copy(original_img, f'{download_path}/{image}')
+    original_img = f'data/images/{image}'
+    shutil.copy(original_img, f'data/final_images/{image}')
 print("All images copied successfully.")
