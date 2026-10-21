@@ -19,11 +19,7 @@ async function contactSubmit() {
   try {
     console.log({ ...form })
     // Sent request to backend
-    // 
-    /////////////////// URGENT ///////////////////
-    // Replace with your backend URL if different
-    /////////////////////////////////////////////
-    const response = await fetch('https://norbertkrol-backend.onrender.com/submit', {
+    const response = await fetch('http://127.0.0.1:8000/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
@@ -45,13 +41,13 @@ async function contactSubmit() {
 
 <template>
   <section id="contact" class="contact section">
-    <div class="container section-title" data-aos="fade-up">
+    <div class="container section-title" data-aos="fade-up mx-auto">
       <h2>Contact</h2>
     </div>
 
     <div class="container" data-aos="fade" data-aos-delay="100">
       <div class="row gy-4">
-        <div class="col-lg-12">
+        <div class="col-lg-8 mx-auto">
           <form class="php-email-form" data-aos="fade-up" data-aos-delay="200" @submit.prevent="contactSubmit">
             <div class="row gy-4">
               <div class="col-md-6">

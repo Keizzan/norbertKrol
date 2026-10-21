@@ -2,7 +2,7 @@
 
 <template>
   <section id="hero" class="hero section light-background">
-    <img src="@/assets/img/hero-bg.jpg" alt="Hero Background" />
+    <img src="@/assets/img/background.jpg" alt="Hero Background" />
 
     <div class="container" data-aos="zoom-out">
       <div class="row justify-content-center">

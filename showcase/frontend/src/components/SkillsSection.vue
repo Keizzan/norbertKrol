@@ -11,23 +11,24 @@ import technologies from '../data/technologies.json'
     <div class="container" data-aos="fade-up" data-aos-delay="100">
       <h3 class="text-center">Technologies</h3>
 
-      <div class="row mb-5">
+      <div class="row mb-5 ">
         <div
           v-for="technology in technologies"
           :key="technology.name"
-          class="col-lg-3 col-md-6 col-sm-12"
+          class="col-lg-3 col-md-6 col-sm-12 mx-auto pb-3"
         >
           <div class="card h-100 mt-4">
             <div class="card-header text-center">
               <h5>{{ technology.name }}</h5>
             </div>
 
-            <div class="card-body text-center">
+            <div class="card-body d-flex align-items-center justify-content-center">
               <img
                 :src="technology.icon"
                 :alt="`${technology.name} logo`"
-                width="100"
-                height="100"
+                class="object-fit-contain img-fluid"
+                height="80"
+                width="80"
               />
 
             </div>

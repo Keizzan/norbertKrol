@@ -9,13 +9,11 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-          <h3 class="resume-title">Summary</h3>
+          <h3 class="resume-title">Norbert Krol</h3>
 
           <div class="resume-item pb-0">
-            <h4>Norbert Krol</h4>
             <ul>
               <li>Godalming, United Kingdom</li>
-              <li>norbikrol@protonmail.com</li>
             </ul>
           </div>
 
