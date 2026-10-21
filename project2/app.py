@@ -69,7 +69,7 @@ def get_image_url(file):
 
 
 # Webapp Page
-st.set_page_config(page_title='Visual Search Recommendation')
+st.set_page_config(page_title='Visual Search Recommendation', page_icon='favicon-32x32.png')
 st.title('Visual Search Recommendation')
 st.write('Upload an image to get 5 recommended similar items')
 
