@@ -15,7 +15,7 @@ import technologies from '../data/technologies.json'
         <div
           v-for="technology in technologies"
           :key="technology.name"
-          class="col-lg-3 col-md-6 col-sm-12 mx-auto pb-3"
+          class="col-lg-3 col-6 mx-auto pb-3"
         >
           <div class="card h-100 mt-4">
             <div class="card-header text-center">

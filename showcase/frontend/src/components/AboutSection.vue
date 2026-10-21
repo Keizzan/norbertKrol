@@ -2,8 +2,8 @@
 
 <template>
   <section id="about" class="about section">
-    <div class="container section-title" data-aos="fade-up">
-      <h2>About</h2>
+    <div class="container" data-aos="fade-up">
+      <h2 class="text-center">About</h2>
       <p>
       <div class='row'>
         <div class='col-lg-6 p-3'>

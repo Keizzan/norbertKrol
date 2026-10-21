@@ -5,7 +5,7 @@ const links = [
   { hash: '#hero', label: 'Home', icon: 'bi-house' },
   { hash: '#about', label: 'About', icon: 'bi-person' },
   { hash: '#skills', label: 'Skills', icon: 'bi-tools' },
-  { hash: '#resume', label: 'Resume', icon: 'bi-file-earmark-text' },
+  { hash: '#resume', label: 'CV', icon: 'bi-file-earmark-text' },
   { hash: '#portfolio', label: 'Portfolio', icon: 'bi-images' },
   { hash: '#contact', label: 'Contact', icon: 'bi-envelope' },
 ]

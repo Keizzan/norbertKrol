@@ -74,5 +74,9 @@
     {
         "name": "VS Code",
         "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/250px-Visual_Studio_Code_1.35_icon.svg.png"
+    },
+    { 
+        "name": "Streamlit",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/0/00/Streamlit_logo_primary_colormark_darktext.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
     }
 ]

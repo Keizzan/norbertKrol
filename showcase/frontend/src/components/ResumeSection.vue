@@ -3,7 +3,7 @@
 <template>
   <section id="resume" class="resume section">
     <div class="container section-title" data-aos="fade-up">
-      <h2>Resume</h2>
+      <h2>Curriculum Vitae</h2>
     </div>
 
     <div class="container">
