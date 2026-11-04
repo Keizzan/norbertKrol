@@ -68,7 +68,7 @@
         </div>
       </div>
             <div class="text-center mt-4" data-aos="fade-up">
-        <a href="/NorbertKrolCV.txt" download class="btn btn-primary">
+        <a href="/NorbertKrolCV.pdf" download class="btn btn-primary">
           Download CV
         </a>
       </div>
